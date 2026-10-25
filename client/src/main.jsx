@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { Chess } from 'chess.js';
 import { io } from 'socket.io-client';
 import './styles.css';
+import './visual-theme.css';
 
 const FILES = ['a','b','c','d','e','f','g','h'];
 const RANKS = [8,7,6,5,4,3,2,1];
@@ -100,11 +101,14 @@ function App() {
   const [recognizing, setRecognizing] = useState(false);
   const [recognition, setRecognition] = useState(null);
   const [selected, setSelected] = useState(null);
+
   const [orientation, setOrientation] = useState('white');
   const [pieceTool, setPieceTool] = useState('P');
   const [roomCode, setRoomCode] = useState('');
   const [room, setRoom] = useState(null);
   const [color, setColor] = useState(null);
+
+  // Keep the rest of your existing App() code below this line.
   const [socket, setSocket] = useState(null);
   const [joinCode, setJoinCode] = useState('');
   const [notice, setNotice] = useState('');
@@ -251,4 +255,9 @@ function App() {
   </div>
 }
 
-createRoot(document.getElementById('root')).render(<App />);
+const rootElement = document.getElementById('root');
+if (!rootElement) throw new Error('Root element not found');
+
+const root = globalThis.__positionPlayRoot || createRoot(rootElement);
+globalThis.__positionPlayRoot = root;
+root.render(<App />);
